@@ -1,0 +1,562 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+<meta name="theme-color" content="#0f172a" />
+<meta name="apple-mobile-web-app-capable" content="yes" />
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+<title>Shades Consulting — Bridging the gap from MVP to Market</title>
+<meta name="description" content="We build the sales funnels and operational infrastructure that take early-stage startups from MVP to market. Execution, not slide decks." />
+<link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 200 180'%3E%3Cpolygon points='10,170 45,170 45,104' fill='%23475569'/%3E%3Crect x='50' y='72' width='25' height='98' fill='%2364748b'/%3E%3Cpolygon points='80,170 80,25 95,10 110,25 110,170' fill='%23818cf8'/%3E%3Crect x='115' y='64' width='25' height='106' fill='%2394a3b8'/%3E%3Cpolygon points='145,170 190,170 145,94' fill='%23cbd5e1'/%3E%3C/svg%3E" />
+<script src="https://cdn.tailwindcss.com"></script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet" />
+<script>
+  tailwind.config = {
+    theme: {
+      screens: {
+        'xs': '400px',
+        'sm': '640px',
+        'md': '768px',
+        'lg': '1024px',
+        'xl': '1280px',
+        '2xl': '1536px',
+      },
+      extend: {
+        fontFamily: { sans: ['Inter', 'system-ui', 'sans-serif'] },
+        animation: {
+          'fade-in-up': 'fadeInUp 0.8s ease-out forwards',
+          'fade-in': 'fadeIn 1s ease-out forwards',
+          'pulse-slow': 'pulse 4s cubic-bezier(0.4,0,0.6,1) infinite',
+        },
+        keyframes: {
+          fadeInUp: {
+            '0%': { opacity: '0', transform: 'translateY(20px)' },
+            '100%': { opacity: '1', transform: 'translateY(0)' },
+          },
+          fadeIn: {
+            '0%': { opacity: '0' },
+            '100%': { opacity: '1' },
+          },
+        },
+      },
+    },
+  };
+</script>
+<style>
+  html { scroll-behavior: smooth; }
+  body { font-family: 'Inter', system-ui, sans-serif; -webkit-font-smoothing: antialiased; }
+  .gradient-text {
+    background: linear-gradient(135deg, #ffffff 0%, #c7d2fe 50%, #818cf8 100%);
+    -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
+  }
+  .grid-bg {
+    background-image:
+      linear-gradient(rgba(99,102,241,0.05) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(99,102,241,0.05) 1px, transparent 1px);
+    background-size: 56px 56px;
+  }
+  .card-hover {
+    transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+  }
+  .glow-button {
+    box-shadow: 0 0 40px rgba(99,102,241,0.25);
+    transition: all 0.3s ease;
+  }
+  /* Only apply hover effects on devices that actually hover — prevents sticky-state on touch */
+  @media (hover: hover) and (pointer: fine) {
+    .card-hover:hover {
+      transform: translateY(-4px);
+      border-color: rgba(99,102,241,0.5);
+      box-shadow: 0 20px 40px -20px rgba(99,102,241,0.25);
+    }
+    .glow-button:hover {
+      box-shadow: 0 0 60px rgba(99,102,241,0.5);
+      transform: translateY(-2px);
+    }
+  }
+  /* Touch feedback — active state for taps */
+  .glow-button:active { transform: scale(0.98); }
+  .card-hover:active { border-color: rgba(99,102,241,0.4); }
+  .mobile-menu {
+    transition: max-height 0.4s ease, opacity 0.3s ease;
+    max-height: 0;
+    overflow: hidden;
+    opacity: 0;
+  }
+  .mobile-menu.open {
+    max-height: 500px;
+    opacity: 1;
+  }
+  .hamburger-line {
+    transition: all 0.3s ease;
+  }
+  .hamburger.open .line-1 { transform: rotate(45deg) translate(5px, 5px); }
+  .hamburger.open .line-2 { opacity: 0; }
+  .hamburger.open .line-3 { transform: rotate(-45deg) translate(7px, -7px); }
+  .nav-link {
+    position: relative;
+    transition: color 0.3s ease;
+  }
+  .nav-link::after {
+    content: '';
+    position: absolute;
+    left: 0; bottom: -4px;
+    width: 0; height: 1px;
+    background: #6366f1;
+    transition: width 0.3s ease;
+  }
+  @media (hover: hover) and (pointer: fine) {
+    .nav-link:hover::after { width: 100%; }
+  }
+
+  /* Safe-area for notched devices */
+  .safe-x { padding-left: max(1.5rem, env(safe-area-inset-left)); padding-right: max(1.5rem, env(safe-area-inset-right)); }
+  @media (min-width: 1024px) {
+    .safe-x { padding-left: max(2.5rem, env(safe-area-inset-left)); padding-right: max(2.5rem, env(safe-area-inset-right)); }
+  }
+
+  /* Tap-friendly targets */
+  .tap-target { min-height: 44px; display: flex; align-items: center; }
+
+  /* Disable iOS tap highlight */
+  a, button { -webkit-tap-highlight-color: transparent; }
+
+  /* Prevent horizontal scroll on tiny screens */
+  body { max-width: 100vw; }
+  .service-number {
+    font-feature-settings: "tnum";
+    background: linear-gradient(135deg, #6366f1 0%, #4f46e5 100%);
+    -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
+  }
+  .service-bullet::before {
+    content: '';
+    display: inline-block;
+    width: 4px; height: 4px;
+    background: #6366f1;
+    border-radius: 50%;
+    margin-right: 12px;
+    transform: translateY(-3px);
+  }
+  .glass-border {
+    background: linear-gradient(135deg, rgba(99,102,241,0.08) 0%, rgba(99,102,241,0.02) 100%);
+    border: 1px solid rgba(99,102,241,0.2);
+  }
+  .noise::before {
+    content: '';
+    position: absolute; inset: 0;
+    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.4'/%3E%3C/svg%3E");
+    opacity: 0.02;
+    pointer-events: none;
+  }
+  ::selection { background: #6366f1; color: #fff; }
+
+  /* Shades logo mark */
+  .shades-mark {
+    display: inline-block;
+    width: auto;
+    height: 100%;
+    overflow: visible;
+    transition: transform 0.4s cubic-bezier(0.4,0,0.2,1);
+  }
+  .group:hover .shades-mark { transform: translateY(-2px); }
+  .shades-mark .spire-1 { transition: fill 0.3s ease; }
+  .group:hover .shades-mark .spire-1 { fill: #a5b4fc; }
+</style>
+
+<!-- Reusable Shades logo mark -->
+<template id="shades-mark-tpl">
+  <svg class="shades-mark" viewBox="0 0 200 180" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+    <polygon points="10,170 45,170 45,104" fill="#475569"/>
+    <rect x="50" y="72" width="25" height="98" fill="#64748b"/>
+    <polygon class="spire-1" points="80,170 80,25 95,10 110,25 110,170" fill="#818cf8"/>
+    <rect x="115" y="64" width="25" height="106" fill="#94a3b8"/>
+    <polygon points="145,170 190,170 145,94" fill="#cbd5e1"/>
+  </svg>
+</template>
+</head>
+<body class="bg-slate-900 text-white antialiased overflow-x-hidden">
+
+<!-- NAV -->
+<nav class="fixed top-0 left-0 right-0 z-50 bg-slate-900/80 backdrop-blur-xl border-b border-white/5">
+  <div class="max-w-7xl mx-auto safe-x">
+    <div class="flex items-center justify-between h-16 md:h-20">
+      <a href="#" class="flex items-center gap-2.5 sm:gap-3 group min-w-0">
+        <div class="h-7 sm:h-8 w-8 sm:w-9 flex items-end justify-center flex-shrink-0">
+          <svg class="shades-mark" viewBox="0 0 200 180" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+            <polygon points="10,170 45,170 45,104" fill="#475569"/>
+            <rect x="50" y="72" width="25" height="98" fill="#64748b"/>
+            <polygon class="spire-1" points="80,170 80,25 95,10 110,25 110,170" fill="#818cf8"/>
+            <rect x="115" y="64" width="25" height="106" fill="#94a3b8"/>
+            <polygon points="145,170 190,170 145,94" fill="#cbd5e1"/>
+          </svg>
+        </div>
+        <div class="flex flex-col leading-none min-w-0">
+          <span class="text-[15px] sm:text-base md:text-lg font-semibold tracking-tight truncate">
+            <span class="sm:hidden">Shades<span class="text-indigo-400">.</span></span>
+            <span class="hidden sm:inline">Shades Consulting</span>
+          </span>
+          <span class="hidden sm:block text-[10px] text-slate-500 tracking-wide mt-0.5">MVP → Market</span>
+        </div>
+      </a>
+
+      <!-- Desktop nav -->
+      <div class="hidden md:flex items-center gap-10">
+        <a href="#services" class="nav-link text-sm text-slate-300 hover:text-white">Services</a>
+        <a href="#approach" class="nav-link text-sm text-slate-300 hover:text-white">Approach</a>
+        <a href="#cta" class="nav-link text-sm text-slate-300 hover:text-white">Contact</a>
+        <a href="#cta" class="text-sm bg-white text-slate-900 hover:bg-indigo-100 px-5 py-2.5 rounded-full font-medium transition-all hover:shadow-lg hover:shadow-white/10">
+          Book Audit
+        </a>
+      </div>
+
+      <!-- Hamburger -->
+      <button id="hamburger-btn" class="hamburger md:hidden w-11 h-11 -mr-2 flex flex-col justify-center items-center gap-1.5 flex-shrink-0" aria-label="Menu" aria-expanded="false">
+        <span class="hamburger-line line-1 block w-6 h-0.5 bg-white"></span>
+        <span class="hamburger-line line-2 block w-6 h-0.5 bg-white"></span>
+        <span class="hamburger-line line-3 block w-6 h-0.5 bg-white"></span>
+      </button>
+    </div>
+
+    <!-- Mobile menu -->
+    <div id="mobile-menu" class="mobile-menu md:hidden">
+      <div class="py-4 flex flex-col border-t border-white/5">
+        <a href="#services" class="mobile-link flex items-center text-base text-slate-200 hover:text-white py-3.5 border-b border-white/5 transition">
+          <span>Services</span>
+          <svg class="w-4 h-4 ml-auto text-slate-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/></svg>
+        </a>
+        <a href="#approach" class="mobile-link flex items-center text-base text-slate-200 hover:text-white py-3.5 border-b border-white/5 transition">
+          <span>Approach</span>
+          <svg class="w-4 h-4 ml-auto text-slate-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/></svg>
+        </a>
+        <a href="#cta" class="mobile-link flex items-center text-base text-slate-200 hover:text-white py-3.5 transition">
+          <span>Contact</span>
+          <svg class="w-4 h-4 ml-auto text-slate-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/></svg>
+        </a>
+        <a href="#cta" class="mobile-link bg-indigo-500 text-white px-5 py-3.5 rounded-full font-medium text-center mt-4 text-base">
+          Book a GTM Audit
+        </a>
+      </div>
+    </div>
+  </div>
+</nav>
+
+<!-- HERO -->
+<section class="relative pt-28 sm:pt-32 md:pt-44 pb-16 sm:pb-20 md:pb-28 overflow-hidden noise">
+  <div class="absolute inset-0 grid-bg opacity-50"></div>
+  <div class="absolute top-0 left-1/2 -translate-x-1/2 w-[500px] sm:w-[600px] h-[500px] sm:h-[600px] bg-indigo-600/20 rounded-full blur-[100px] sm:blur-[120px] pointer-events-none"></div>
+
+  <!-- Watermark logo mark (desktop only) -->
+  <div class="hidden lg:block absolute right-0 top-1/2 -translate-y-1/2 w-[520px] h-[460px] opacity-[0.07] pointer-events-none">
+    <svg viewBox="0 0 200 180" xmlns="http://www.w3.org/2000/svg" class="w-full h-full" aria-hidden="true">
+      <polygon points="10,170 45,170 45,104" fill="#94a3b8"/>
+      <rect x="50" y="72" width="25" height="98" fill="#94a3b8"/>
+      <polygon points="80,170 80,25 95,10 110,25 110,170" fill="#818cf8"/>
+      <rect x="115" y="64" width="25" height="106" fill="#94a3b8"/>
+      <polygon points="145,170 190,170 145,94" fill="#94a3b8"/>
+    </svg>
+  </div>
+
+  <div class="relative max-w-7xl mx-auto safe-x">
+    <div class="max-w-4xl">
+      <div class="flex flex-col sm:flex-row sm:flex-wrap items-start sm:items-center gap-2.5 sm:gap-3 mb-6 sm:mb-8 animate-fade-in">
+        <div class="inline-flex items-center gap-2 px-3 py-1.5 rounded-full border border-indigo-500/30 bg-indigo-500/5">
+          <span class="w-1.5 h-1.5 rounded-full bg-indigo-400 animate-pulse-slow flex-shrink-0"></span>
+          <span class="text-[11px] sm:text-xs font-medium text-indigo-300 tracking-wide uppercase">Bridging the gap from MVP to Market</span>
+        </div>
+        <div class="inline-flex items-center gap-2 px-3 py-1.5 rounded-full border border-white/10 bg-white/5">
+          <span class="text-[11px] sm:text-xs font-medium text-slate-400 tracking-wide uppercase">Now accepting Q3 founders</span>
+        </div>
+      </div>
+
+      <h1 class="text-[2rem] xs:text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-bold leading-[1.08] sm:leading-[1.05] tracking-tight mb-6 sm:mb-7 animate-fade-in-up">
+        We build the
+        <span class="gradient-text">sales funnels</span>
+        and
+        <span class="gradient-text">operational infrastructure</span>
+        that take early-stage startups to market.
+      </h1>
+
+      <p class="text-base sm:text-lg md:text-xl text-slate-400 leading-relaxed max-w-2xl mb-8 sm:mb-10 animate-fade-in-up" style="animation-delay:0.15s; opacity:0;">
+        Execution over slide decks. We embed, ship the pipes, and leave the rails behind — so your runway becomes revenue, not retainer fees.
+      </p>
+
+      <div class="flex flex-col sm:flex-row gap-3 sm:gap-4 animate-fade-in-up" style="animation-delay:0.3s; opacity:0;">
+        <a href="#cta" class="glow-button inline-flex items-center justify-center gap-2 bg-indigo-500 px-7 py-4 sm:py-3.5 rounded-full font-semibold text-base w-full sm:w-auto">
+          Book a GTM Audit
+          <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8l4 4m0 0l-4 4m4-4H3"/></svg>
+        </a>
+        <a href="#services" class="inline-flex items-center justify-center gap-2 border border-white/10 px-7 py-4 sm:py-3.5 rounded-full font-medium text-base transition-all w-full sm:w-auto active:bg-white/5">
+          See the 5 services
+        </a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- SOCIAL PROOF -->
+<section class="relative py-8 sm:py-10 border-y border-white/5 bg-slate-900/50">
+  <div class="max-w-7xl mx-auto safe-x">
+    <div class="flex flex-col md:flex-row items-center justify-center gap-3 sm:gap-6 md:gap-10 text-center">
+      <p class="text-[10px] sm:text-xs uppercase tracking-[0.18em] sm:tracking-[0.2em] text-slate-500 font-medium">Trusted by early-stage innovators at</p>
+      <div class="flex items-center gap-5 sm:gap-8 md:gap-12">
+        <span class="text-lg sm:text-xl md:text-2xl font-semibold text-slate-300 tracking-tight">Chitrabazaar</span>
+        <span class="text-slate-700">·</span>
+        <span class="text-lg sm:text-xl md:text-2xl font-semibold text-slate-300 tracking-tight">Kast</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- SERVICES -->
+<section id="services" class="relative py-16 sm:py-20 md:py-32">
+  <div class="max-w-7xl mx-auto safe-x">
+    <div class="max-w-3xl mb-10 sm:mb-14 md:mb-20">
+      <span class="text-[11px] sm:text-xs uppercase tracking-[0.2em] text-indigo-400 font-medium">Core Services</span>
+      <h2 class="text-[2rem] sm:text-3xl md:text-5xl lg:text-6xl font-bold mt-3 sm:mt-4 leading-[1.1] tracking-tight">
+        Five execution surfaces.
+        <span class="text-slate-500">Zero theory.</span>
+      </h2>
+      <p class="text-base sm:text-lg text-slate-400 mt-4 sm:mt-6 leading-relaxed">
+        Each block ships with a measurable outcome and a precise scope of work. No retainers without a release date.
+      </p>
+    </div>
+
+    <div class="grid md:grid-cols-2 gap-4 sm:gap-5 md:gap-6">
+
+      <!-- Service 1 -->
+      <article class="card-hover group relative bg-slate-800/30 border border-white/10 rounded-2xl p-5 sm:p-7 md:p-9">
+        <div class="flex items-start justify-between mb-6">
+          <span class="service-number text-4xl sm:text-5xl md:text-6xl font-bold tracking-tighter">01</span>
+          <span class="text-xs uppercase tracking-[0.15em] text-indigo-400/80 font-medium">Sales</span>
+        </div>
+        <h3 class="text-xl sm:text-2xl md:text-[28px] font-semibold tracking-tight mb-4 sm:mb-5 leading-tight">
+          Go-To-Market &amp; Sales Pipeline Execution
+        </h3>
+        <div class="mb-6 pb-6 border-b border-white/5">
+          <p class="text-xs uppercase tracking-[0.15em] text-slate-500 font-medium mb-2">Outcome</p>
+          <p class="text-slate-200 leading-relaxed">Accelerating customer acquisition channels and validating product-market fit.</p>
+        </div>
+        <div>
+          <p class="text-xs uppercase tracking-[0.15em] text-slate-500 font-medium mb-4">What we do</p>
+          <ul class="space-y-3 text-slate-300 text-[15px] leading-relaxed">
+            <li class="service-bullet">Building outbound sales infrastructure from scratch.</li>
+            <li class="service-bullet">Setting up automated messaging sequences.</li>
+            <li class="service-bullet">Managing conversion funnels from raw lead to live demo.</li>
+          </ul>
+        </div>
+      </article>
+
+      <!-- Service 2 -->
+      <article class="card-hover group relative bg-slate-800/30 border border-white/10 rounded-2xl p-5 sm:p-7 md:p-9">
+        <div class="flex items-start justify-between mb-6">
+          <span class="service-number text-4xl sm:text-5xl md:text-6xl font-bold tracking-tighter">02</span>
+          <span class="text-xs uppercase tracking-[0.15em] text-indigo-400/80 font-medium">Intelligence</span>
+        </div>
+        <h3 class="text-xl sm:text-2xl md:text-[28px] font-semibold tracking-tight mb-4 sm:mb-5 leading-tight">
+          Market Intelligence &amp; Positioning Diagnostics
+        </h3>
+        <div class="mb-6 pb-6 border-b border-white/5">
+          <p class="text-xs uppercase tracking-[0.15em] text-slate-500 font-medium mb-2">Outcome</p>
+          <p class="text-slate-200 leading-relaxed">Eliminating market guesswork with real-time field data.</p>
+        </div>
+        <div>
+          <p class="text-xs uppercase tracking-[0.15em] text-slate-500 font-medium mb-4">What we do</p>
+          <ul class="space-y-3 text-slate-300 text-[15px] leading-relaxed">
+            <li class="service-bullet">Continuous competitor mapping.</li>
+            <li class="service-bullet">Pricing sensitivity analysis and localized demand assessments.</li>
+            <li class="service-bullet">Collecting raw buyer feedback to optimize sales scripts.</li>
+          </ul>
+        </div>
+      </article>
+
+      <!-- Service 3 -->
+      <article class="card-hover group relative bg-slate-800/30 border border-white/10 rounded-2xl p-5 sm:p-7 md:p-9">
+        <div class="flex items-start justify-between mb-6">
+          <span class="service-number text-4xl sm:text-5xl md:text-6xl font-bold tracking-tighter">03</span>
+          <span class="text-xs uppercase tracking-[0.15em] text-indigo-400/80 font-medium">Operations</span>
+        </div>
+        <h3 class="text-xl sm:text-2xl md:text-[28px] font-semibold tracking-tight mb-4 sm:mb-5 leading-tight">
+          Corporate Architecture &amp; Operational Guardrails
+        </h3>
+        <div class="mb-6 pb-6 border-b border-white/5">
+          <p class="text-xs uppercase tracking-[0.15em] text-slate-500 font-medium mb-2">Outcome</p>
+          <p class="text-slate-200 leading-relaxed">Protecting founder equity and maximizing operational runway.</p>
+        </div>
+        <div>
+          <p class="text-xs uppercase tracking-[0.15em] text-slate-500 font-medium mb-4">What we do</p>
+          <ul class="space-y-3 text-slate-300 text-[15px] leading-relaxed">
+            <li class="service-bullet">Engineering lean fiscal frameworks.</li>
+            <li class="service-bullet">Designing administrative safety boundaries.</li>
+            <li class="service-bullet">Building structured milestone layers for bootstrap environments.</li>
+          </ul>
+        </div>
+      </article>
+
+      <!-- Service 4 -->
+      <article class="card-hover group relative bg-slate-800/30 border border-white/10 rounded-2xl p-5 sm:p-7 md:p-9">
+        <div class="flex items-start justify-between mb-6">
+          <span class="service-number text-4xl sm:text-5xl md:text-6xl font-bold tracking-tighter">04</span>
+          <span class="text-xs uppercase tracking-[0.15em] text-indigo-400/80 font-medium">Revenue</span>
+        </div>
+        <h3 class="text-xl sm:text-2xl md:text-[28px] font-semibold tracking-tight mb-4 sm:mb-5 leading-tight">
+          Monetization Strategy &amp; Pricing Frameworks
+        </h3>
+        <div class="mb-6 pb-6 border-b border-white/5">
+          <p class="text-xs uppercase tracking-[0.15em] text-slate-500 font-medium mb-2">Outcome</p>
+          <p class="text-slate-200 leading-relaxed">Unlocking hidden margins and structuring recurring revenue.</p>
+        </div>
+        <div>
+          <p class="text-xs uppercase tracking-[0.15em] text-slate-500 font-medium mb-4">What we do</p>
+          <ul class="space-y-3 text-slate-300 text-[15px] leading-relaxed">
+            <li class="service-bullet">Deploying multi-tiered revenue distribution strategies.</li>
+            <li class="service-bullet">Optimizing pricing tiers across segments.</li>
+            <li class="service-bullet">Engineering subscription metrics for B2B and consumer sectors.</li>
+          </ul>
+        </div>
+      </article>
+
+      <!-- Service 5 — full width -->
+      <article class="card-hover group relative bg-slate-800/30 border border-white/10 rounded-2xl p-5 sm:p-7 md:p-9 md:col-span-2">
+        <div class="flex items-start justify-between mb-6">
+          <span class="service-number text-4xl sm:text-5xl md:text-6xl font-bold tracking-tighter">05</span>
+          <span class="text-xs uppercase tracking-[0.15em] text-indigo-400/80 font-medium">Capital</span>
+        </div>
+        <div class="grid md:grid-cols-2 gap-8 md:gap-12">
+          <div>
+            <h3 class="text-xl sm:text-2xl md:text-[28px] font-semibold tracking-tight mb-4 sm:mb-5 leading-tight">
+              Growth, Expansion &amp; Investment Readiness Support
+            </h3>
+            <div>
+              <p class="text-xs uppercase tracking-[0.15em] text-slate-500 font-medium mb-2">Outcome</p>
+              <p class="text-slate-200 leading-relaxed">Packaging early metrics for institutional and angel capital.</p>
+            </div>
+          </div>
+          <div>
+            <p class="text-xs uppercase tracking-[0.15em] text-slate-500 font-medium mb-4">What we do</p>
+            <ul class="space-y-3 text-slate-300 text-[15px] leading-relaxed">
+              <li class="service-bullet">Translating growth trajectories into a clear venture narrative.</li>
+              <li class="service-bullet">Codifying operational data and financial guardrails.</li>
+              <li class="service-bullet">Building an ironclad investor pack for fundraising cycles.</li>
+            </ul>
+          </div>
+        </div>
+      </article>
+
+    </div>
+  </div>
+</section>
+
+<!-- ANTI-CONSULTANT TRUST CLOSE -->
+<section id="approach" class="relative py-16 sm:py-20 md:py-28">
+  <div class="max-w-5xl mx-auto safe-x">
+    <div class="glass-border relative rounded-2xl sm:rounded-3xl p-6 sm:p-8 md:p-14 lg:p-16 overflow-hidden">
+      <div class="absolute -top-20 -right-20 w-60 sm:w-72 h-60 sm:h-72 bg-indigo-500/10 rounded-full blur-3xl"></div>
+      <div class="absolute -bottom-20 -left-20 w-60 sm:w-72 h-60 sm:h-72 bg-indigo-700/10 rounded-full blur-3xl"></div>
+
+      <div class="relative">
+        <div class="flex items-center gap-2 mb-5 sm:mb-6">
+          <div class="w-6 sm:w-8 h-px bg-indigo-400"></div>
+          <span class="text-[10px] sm:text-xs uppercase tracking-[0.18em] sm:tracking-[0.2em] text-indigo-400 font-medium">The Anti-Consultant Promise</span>
+        </div>
+
+        <p class="text-xl sm:text-2xl md:text-3xl lg:text-[34px] font-medium leading-[1.4] sm:leading-[1.35] tracking-tight text-white">
+          We operate with <span class="text-indigo-400">absolute resource autonomy</span>. We don't drain internal management bandwidth — we deploy our own diagnostic models and tracking workflows so you can stay focused on shipping product.
+        </p>
+
+        <div class="mt-8 sm:mt-10 flex flex-col sm:flex-row sm:items-center gap-4 sm:gap-6 pt-6 sm:pt-8 border-t border-white/10">
+          <div class="flex items-center gap-3">
+            <svg class="w-5 h-5 text-indigo-400 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/></svg>
+            <span class="text-sm sm:text-base text-slate-300">No 60-page theoretical slide decks.</span>
+          </div>
+          <div class="hidden sm:block h-4 w-px bg-white/10"></div>
+          <div class="flex items-center gap-3">
+            <svg class="w-5 h-5 text-indigo-400 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/></svg>
+            <span class="text-sm sm:text-base text-slate-300">Just pure execution.</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- CTA -->
+<section id="cta" class="relative py-16 sm:py-20 md:py-32 overflow-hidden">
+  <div class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] sm:w-[800px] h-[300px] sm:h-[400px] bg-indigo-600/15 rounded-full blur-[100px] sm:blur-[140px] pointer-events-none"></div>
+
+  <div class="relative max-w-3xl mx-auto safe-x text-center">
+    <span class="text-[11px] sm:text-xs uppercase tracking-[0.2em] text-indigo-400 font-medium">Start here</span>
+    <h2 class="text-[2rem] sm:text-4xl md:text-6xl font-bold mt-4 sm:mt-5 mb-5 sm:mb-6 leading-[1.08] sm:leading-[1.05] tracking-tight">
+      Ready to build the <span class="gradient-text">pipes</span>?
+    </h2>
+    <p class="text-base sm:text-lg text-slate-400 mb-8 sm:mb-10 leading-relaxed max-w-xl mx-auto">
+      A 45-minute diagnostic. We map your funnel gaps, surface the next 90 days of execution, and tell you straight if we're not the right fit.
+    </p>
+
+    <a href="mailto:hello@shadesconsulting.co?subject=Startup%20GTM%20Audit" class="glow-button inline-flex items-center justify-center gap-2 sm:gap-3 bg-indigo-500 px-7 sm:px-9 py-4 rounded-full font-semibold text-base sm:text-lg w-full sm:w-auto">
+      Book a Startup GTM Audit
+      <svg class="w-5 h-5 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8l4 4m0 0l-4 4m4-4H3"/></svg>
+    </a>
+
+    <p class="mt-5 sm:mt-6 text-xs sm:text-sm text-slate-500 px-4">Typically responds within 12 hours · Founders only</p>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer class="border-t border-white/5 pt-12 sm:pt-16 pb-8 sm:pb-10" style="padding-bottom: max(2rem, env(safe-area-inset-bottom));">
+  <div class="max-w-7xl mx-auto safe-x">
+    <div class="flex flex-col items-center text-center mb-10 sm:mb-12">
+      <div class="h-16 sm:h-20 w-20 sm:w-24 flex items-end justify-center">
+        <svg viewBox="0 0 200 180" xmlns="http://www.w3.org/2000/svg" class="w-full h-full" aria-hidden="true">
+          <polygon points="10,170 45,170 45,104" fill="#475569"/>
+          <rect x="50" y="72" width="25" height="98" fill="#64748b"/>
+          <polygon points="80,170 80,25 95,10 110,25 110,170" fill="#818cf8"/>
+          <rect x="115" y="64" width="25" height="106" fill="#94a3b8"/>
+          <polygon points="145,170 190,170 145,94" fill="#cbd5e1"/>
+        </svg>
+      </div>
+      <h3 class="mt-4 sm:mt-5 text-xl sm:text-2xl md:text-3xl font-semibold tracking-tight">Shades Consulting</h3>
+      <p class="mt-1.5 sm:mt-2 text-xs sm:text-sm text-slate-400 italic">Bridging the gap from MVP to Market</p>
+    </div>
+
+    <div class="flex flex-col-reverse sm:flex-row items-center justify-between gap-5 sm:gap-4 pt-6 sm:pt-8 border-t border-white/5 text-center sm:text-left">
+      <p class="text-[11px] sm:text-xs text-slate-500">© 2026 Shades Consulting. Built for founders who ship.</p>
+      <div class="flex items-center gap-5 sm:gap-6 text-xs text-slate-500">
+        <a href="#services" class="hover:text-slate-300 active:text-slate-300 transition py-1">Services</a>
+        <a href="#approach" class="hover:text-slate-300 active:text-slate-300 transition py-1">Approach</a>
+        <a href="#cta" class="hover:text-slate-300 active:text-slate-300 transition py-1">Contact</a>
+      </div>
+    </div>
+  </div>
+</footer>
+
+<script>
+  const hamburger = document.getElementById('hamburger-btn');
+  const menu = document.getElementById('mobile-menu');
+
+  function setMenu(open) {
+    hamburger.classList.toggle('open', open);
+    menu.classList.toggle('open', open);
+    hamburger.setAttribute('aria-expanded', open ? 'true' : 'false');
+    document.body.style.overflow = open ? 'hidden' : '';
+  }
+  hamburger.addEventListener('click', () => setMenu(!menu.classList.contains('open')));
+  document.querySelectorAll('.mobile-link').forEach(link => {
+    link.addEventListener('click', () => setMenu(false));
+  });
+  // Close on viewport resize to desktop
+  window.addEventListener('resize', () => {
+    if (window.innerWidth >= 768) setMenu(false);
+  });
+  // Close on Escape
+  document.addEventListener('keydown', e => {
+    if (e.key === 'Escape' && menu.classList.contains('open')) setMenu(false);
+  });
+</script>
+
+</body>
+</html>
