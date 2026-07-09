@@ -17,7 +17,7 @@ export const siteConfig = {
   tagline: 'Bridging the gap from MVP to Market',
   shortTagline: 'MVP → Market',
   navCta: 'Book Audit',
-  url: 'https://www.shadesconsulting.in',
+  url: 'https://shadesconsulting.in',
   description:
     'We build the sales funnels and operational infrastructure that take early-stage startups from MVP to market. Execution, not slide decks.',
   contactEmail: 'hello@shadesconsulting.co',
