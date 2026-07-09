@@ -12,10 +12,10 @@ export function SocialProof() {
             <p className="text-[10px] font-medium uppercase tracking-[0.18em] text-slate-500 sm:text-xs sm:tracking-[0.2em]">
               {socialProof.prefix}
             </p>
-            <ul className="flex items-center gap-5 sm:gap-8 md:gap-12">
+            <ul className="flex flex-wrap items-center justify-center gap-x-4 gap-y-2 sm:gap-x-6 md:gap-x-8">
               {socialProof.names.map((name, i) => (
-                <li key={name} className="flex items-center gap-5 sm:gap-8 md:gap-12">
-                  <span className="text-lg font-semibold tracking-tight text-slate-300 sm:text-xl md:text-2xl">
+                <li key={name} className="flex items-center gap-4 sm:gap-6 md:gap-8">
+                  <span className="whitespace-nowrap text-base font-semibold tracking-tight text-slate-300 sm:text-lg md:text-xl">
                     {name}
                   </span>
                   {i < socialProof.names.length - 1 && (

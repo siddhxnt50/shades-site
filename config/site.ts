@@ -41,7 +41,7 @@ export const siteConfig = {
 
   socialProof: {
     prefix: 'Trusted by early-stage innovators at',
-    names: ['Chitrabazaar', 'Kast'],
+    names: ['Chitrabazaar', 'Kast', 'Krut.ai', 'OptimaLegal', 'Zoecrafts'],
   },
 
   services: {
