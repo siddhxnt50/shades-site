@@ -3,21 +3,17 @@ import { cva, type VariantProps } from 'class-variance-authority';
 import { cn } from '@/lib/utils';
 
 const buttonVariants = cva(
-  'inline-flex items-center justify-center gap-2 rounded-full font-medium transition-all focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-indigo-400 focus-visible:ring-offset-2 focus-visible:ring-offset-slate-900 active:scale-[0.98] disabled:pointer-events-none disabled:opacity-50',
+  'inline-flex items-center justify-center gap-2 rounded-full font-medium transition-[background-color,border-color,color,transform] duration-200 active:scale-[0.98] disabled:pointer-events-none disabled:opacity-50',
   {
     variants: {
       variant: {
-        primary:
-          'bg-indigo-500 text-white font-semibold shadow-[0_0_40px_rgba(99,102,241,0.25)] [@media(hover:hover)_and_(pointer:fine)]:hover:bg-indigo-400 [@media(hover:hover)_and_(pointer:fine)]:hover:shadow-[0_0_60px_rgba(99,102,241,0.5)] [@media(hover:hover)_and_(pointer:fine)]:hover:-translate-y-0.5',
-        outline:
-          'border border-white/10 text-white active:bg-white/5 [@media(hover:hover)_and_(pointer:fine)]:hover:border-white/30 [@media(hover:hover)_and_(pointer:fine)]:hover:bg-white/5',
-        inverted:
-          'bg-white text-slate-900 [@media(hover:hover)_and_(pointer:fine)]:hover:bg-indigo-100 [@media(hover:hover)_and_(pointer:fine)]:hover:shadow-lg [@media(hover:hover)_and_(pointer:fine)]:hover:shadow-white/10',
+        primary: 'bg-paper text-ink hover:bg-white',
+        secondary: 'border border-paper/20 text-paper hover:border-paper/50 hover:bg-paper/5',
       },
       size: {
-        sm: 'px-5 py-2.5 text-sm',
-        md: 'px-7 py-4 sm:py-3.5 text-base',
-        lg: 'px-7 sm:px-9 py-4 text-base sm:text-lg',
+        sm: 'h-10 px-5 text-sm',
+        md: 'h-12 px-6 text-[15px]',
+        lg: 'h-14 px-8 text-base',
       },
       fullWidthMobile: {
         true: 'w-full sm:w-auto',

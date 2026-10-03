@@ -5,28 +5,22 @@ export function SocialProof() {
   const { socialProof } = siteConfig;
 
   return (
-    <section aria-label="Trusted by" className="relative border-y border-white/5 bg-slate-900/50 py-8 sm:py-10">
-      <div className="safe-x mx-auto max-w-7xl">
-        <Reveal>
-          <div className="flex flex-col items-center justify-center gap-3 text-center sm:gap-6 md:flex-row md:gap-10">
-            <p className="text-[10px] font-medium uppercase tracking-[0.18em] text-slate-500 sm:text-xs sm:tracking-[0.2em]">
-              {socialProof.prefix}
-            </p>
-            <ul className="flex flex-wrap items-center justify-center gap-x-4 gap-y-2 sm:gap-x-6 md:gap-x-8">
-              {socialProof.names.map((name, i) => (
-                <li key={name} className="flex items-center gap-4 sm:gap-6 md:gap-8">
-                  <span className="whitespace-nowrap text-base font-semibold tracking-tight text-slate-300 sm:text-lg md:text-xl">
-                    {name}
-                  </span>
-                  {i < socialProof.names.length - 1 && (
-                    <span aria-hidden="true" className="text-slate-700">
-                      ·
-                    </span>
-                  )}
-                </li>
-              ))}
-            </ul>
-          </div>
+    <section aria-labelledby="proof-heading" className="border-y border-ink-700 bg-ink-850/60">
+      <div className="safe-x mx-auto max-w-7xl py-8 sm:py-10">
+        <Reveal className="flex flex-col gap-5 lg:flex-row lg:items-center lg:gap-12">
+          <h2 id="proof-heading" className="eyebrow shrink-0 lg:max-w-[14rem]">
+            {socialProof.prefix}
+          </h2>
+          <ul className="flex flex-wrap gap-x-7 gap-y-3 sm:gap-x-10 lg:flex-1 lg:justify-between lg:gap-x-6">
+            {socialProof.names.map((name) => (
+              <li
+                key={name}
+                className="whitespace-nowrap font-display text-lg font-medium tracking-tight text-paper-dim sm:text-xl lg:text-2xl"
+              >
+                {name}
+              </li>
+            ))}
+          </ul>
         </Reveal>
       </div>
     </section>

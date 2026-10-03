@@ -6,6 +6,14 @@ export const alt = `${siteConfig.name} — ${siteConfig.tagline}`;
 export const size = { width: 1200, height: 630 };
 export const contentType = 'image/png';
 
+const bars = [
+  { h: 46, color: '#2B3A50', clip: 'polygon(100% 0, 100% 100%, 0 100%)' },
+  { h: 74, color: '#4A5A6E', clip: 'none' },
+  { h: 100, color: '#818CF8', clip: 'polygon(50% 0, 100% 9%, 100% 100%, 0 100%, 0 9%)' },
+  { h: 78, color: '#9FA8B0', clip: 'none' },
+  { h: 56, color: '#CDD2D6', clip: 'polygon(0 0, 100% 100%, 0 100%)' },
+];
+
 export default function OgImage() {
   return new ImageResponse(
     (
@@ -14,34 +22,44 @@ export default function OgImage() {
           width: '100%',
           height: '100%',
           display: 'flex',
-          flexDirection: 'column',
-          alignItems: 'center',
-          justifyContent: 'center',
-          backgroundColor: '#0f172a',
-          backgroundImage:
-            'radial-gradient(circle at 50% 0%, rgba(99,102,241,0.25) 0%, rgba(15,23,42,0) 60%)',
+          justifyContent: 'space-between',
+          alignItems: 'flex-end',
+          backgroundColor: '#0B1220',
+          padding: '72px 80px',
         }}
       >
-        <svg width="220" height="198" viewBox="0 0 200 180">
-          <polygon points="10,170 45,170 45,104" fill="#475569" />
-          <rect x="50" y="72" width="25" height="98" fill="#64748b" />
-          <polygon points="80,170 80,25 95,10 110,25 110,170" fill="#818cf8" />
-          <rect x="115" y="64" width="25" height="106" fill="#94a3b8" />
-          <polygon points="145,170 190,170 145,94" fill="#cbd5e1" />
-        </svg>
-        <div
-          style={{
-            marginTop: 48,
-            fontSize: 64,
-            fontWeight: 700,
-            color: '#ffffff',
-            letterSpacing: '-0.02em',
-          }}
-        >
-          {siteConfig.name}
+        <div style={{ display: 'flex', flexDirection: 'column', maxWidth: 640 }}>
+          <div style={{ fontSize: 22, color: '#7F8A99', letterSpacing: 4, textTransform: 'uppercase' }}>
+            {siteConfig.name}
+          </div>
+          <div
+            style={{
+              marginTop: 28,
+              fontSize: 64,
+              fontWeight: 700,
+              lineHeight: 1.05,
+              color: '#ECE9E3',
+              letterSpacing: '-0.02em',
+            }}
+          >
+            {siteConfig.tagline}
+          </div>
+          <div style={{ marginTop: 28, fontSize: 26, color: '#9AA3AE' }}>
+            Sales funnels and operational infrastructure for early-stage startups.
+          </div>
         </div>
-        <div style={{ marginTop: 16, fontSize: 30, color: '#94a3b8' }}>
-          {siteConfig.tagline}
+        <div style={{ display: 'flex', alignItems: 'flex-end', height: 360, gap: 12 }}>
+          {bars.map((bar, i) => (
+            <div
+              key={i}
+              style={{
+                width: 56,
+                height: `${bar.h}%`,
+                backgroundColor: bar.color,
+                clipPath: bar.clip,
+              }}
+            />
+          ))}
         </div>
       </div>
     ),

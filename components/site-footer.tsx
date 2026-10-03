@@ -1,38 +1,60 @@
+import { ArrowUp } from 'lucide-react';
 import { siteConfig } from '@/config/site';
 import { LogoMark } from '@/components/logo';
 
 export function SiteFooter() {
+  const year = new Date().getFullYear();
+
   return (
     <footer
-      className="border-t border-white/5 pt-12 sm:pt-16"
+      className="border-t border-ink-700 bg-ink-950"
       style={{ paddingBottom: 'max(2rem, env(safe-area-inset-bottom))' }}
     >
-      <div className="safe-x mx-auto max-w-7xl">
-        <div className="mb-10 flex flex-col items-center text-center sm:mb-12">
-          <span className="flex h-16 w-20 items-end justify-center sm:h-20 sm:w-24">
-            <LogoMark className="h-full w-full" />
-          </span>
-          <p className="mt-4 text-xl font-semibold tracking-tight sm:mt-5 sm:text-2xl md:text-3xl">
-            {siteConfig.name}
-          </p>
-          <p className="mt-1.5 text-xs italic text-slate-400 sm:mt-2 sm:text-sm">
-            {siteConfig.tagline}
-          </p>
+      <div className="safe-x mx-auto max-w-7xl pt-16 sm:pt-20">
+        <div className="grid gap-12 sm:grid-cols-2 lg:grid-cols-12">
+          <div className="lg:col-span-6">
+            <LogoMark className="h-12 w-auto" />
+            <p className="mt-6 font-display text-xl font-semibold tracking-tight text-paper">
+              {siteConfig.name}
+            </p>
+            <p className="mt-2 text-sm text-fog">{siteConfig.tagline}</p>
+          </div>
+
+          <nav aria-label="Footer" className="lg:col-span-3">
+            <p className="eyebrow">Navigate</p>
+            <ul className="mt-4 space-y-1">
+              {siteConfig.nav.map((item) => (
+                <li key={item.href}>
+                  <a href={item.href} className="inline-block py-1.5 text-sm text-fog transition-colors hover:text-paper">
+                    {item.label}
+                  </a>
+                </li>
+              ))}
+            </ul>
+          </nav>
+
+          <div className="lg:col-span-3">
+            <p className="eyebrow">Contact</p>
+            <a
+              href={`mailto:${siteConfig.contactEmail}`}
+              className="mt-4 inline-block break-all py-1.5 text-sm text-fog transition-colors hover:text-paper"
+            >
+              {siteConfig.contactEmail}
+            </a>
+          </div>
         </div>
 
-        <div className="flex flex-col-reverse items-center justify-between gap-5 border-t border-white/5 pt-6 text-center sm:flex-row sm:gap-4 sm:pt-8 sm:text-left">
-          <p className="text-[11px] text-slate-500 sm:text-xs">{siteConfig.footer.copyright}</p>
-          <nav aria-label="Footer" className="flex items-center gap-5 text-xs text-slate-500 sm:gap-6">
-            {siteConfig.nav.map((item) => (
-              <a
-                key={item.href}
-                href={item.href}
-                className="py-1 transition hover:text-slate-300 active:text-slate-300"
-              >
-                {item.label}
-              </a>
-            ))}
-          </nav>
+        <div className="mt-16 flex flex-col-reverse gap-4 border-t border-ink-700 pt-6 sm:flex-row sm:items-center sm:justify-between">
+          <p className="text-xs text-fog-dim">
+            © {year} {siteConfig.name}. {siteConfig.footer.signoff}
+          </p>
+          <a
+            href="#top"
+            className="inline-flex items-center gap-2 self-start py-1.5 text-xs text-fog-dim transition-colors hover:text-paper sm:self-auto"
+          >
+            Back to top
+            <ArrowUp aria-hidden="true" className="h-3.5 w-3.5" />
+          </a>
         </div>
       </div>
     </footer>

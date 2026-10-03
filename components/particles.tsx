@@ -94,8 +94,8 @@ export function ParticleField() {
         ctx.beginPath();
         ctx.arc(p.x + dx, p.y + dy, p.r, 0, Math.PI * 2);
         ctx.fillStyle = p.indigo
-          ? `rgba(165, 180, 252, ${alpha})`
-          : `rgba(241, 245, 249, ${alpha * 0.85})`;
+          ? `rgba(129, 140, 248, ${alpha})`
+          : `rgba(236, 233, 227, ${alpha * 0.7})`;
         ctx.fill();
       }
 
@@ -142,7 +142,7 @@ export function ParticleField() {
     <canvas
       ref={canvasRef}
       aria-hidden="true"
-      className="pointer-events-none fixed inset-0 z-0 h-screen w-screen opacity-[0.85] motion-reduce:hidden"
+      className="pointer-events-none fixed inset-0 z-0 h-screen w-screen opacity-60 motion-reduce:hidden"
     />
   );
 }
