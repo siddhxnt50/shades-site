@@ -249,13 +249,3 @@ export const siteConfig = {
 } as const;
 
 export const sectionIds = siteConfig.nav.map((item) => item.href.slice(1));
-export const serviceIds = services.map((s) => `service-${s.number}`);
-
-export function pillarOf(service: ServiceItem): Pillar {
-  return pillars.find((p) => p.id === service.pillar)!;
-}
-
-/** First service in each pillar — the hero figure links each pillar there. */
-export function firstServiceIn(pillar: Pillar['id']): ServiceItem {
-  return services.find((s) => s.pillar === pillar)!;
-}

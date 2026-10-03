@@ -1,4 +1,4 @@
-import { firstServiceIn, siteConfig } from '@/config/site';
+import { siteConfig } from '@/config/site';
 import { cn } from '@/lib/utils';
 
 /** The logo mark, enlarged as the hero figure. */
@@ -34,11 +34,10 @@ export function ShadeRamp() {
           {pillars.map((pillar, i) => (
             <li key={pillar.id} className={cn(i > 0 && 'border-l border-ink-700')}>
               <a
-                href={`#service-${firstServiceIn(pillar.id).number}`}
+                href={`#pillar-${pillar.id}`}
                 className={cn('group block h-full pb-1 pt-4', i === 0 ? 'pr-2' : 'pl-3 pr-1 sm:pl-4')}
               >
-                <span className="block font-mono text-[10px] text-signal sm:text-[11px]">0{i + 1}</span>
-                <span className="mt-1 block font-display text-[13px] font-semibold text-paper transition-colors group-hover:text-white xs:text-sm sm:text-base">
+                <span className="block font-display text-[13px] font-semibold text-paper transition-colors group-hover:text-white xs:text-sm sm:text-base">
                   {pillar.label}
                 </span>
                 <span className="mt-1 hidden text-xs leading-snug text-fog-dim sm:block">

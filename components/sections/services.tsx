@@ -1,18 +1,23 @@
-import { pillarOf, siteConfig, type ServiceItem } from '@/config/site';
+import { siteConfig, type ServiceItem } from '@/config/site';
 import { Reveal } from '@/components/motion';
-import { ServiceIndex } from '@/components/sections/service-index';
+import { cn } from '@/lib/utils';
 
-function ServiceEntry({ service }: { service: ServiceItem }) {
+function ServiceEntry({ service, index }: { service: ServiceItem; index: number }) {
   const id = `service-${service.number}`;
-  const pillar = pillarOf(service);
 
   return (
-    <li id={id} className="border-b border-ink-700 py-10 first:pt-0 sm:py-14 lg:first:pt-2">
-      <Reveal>
+    <li
+      id={id}
+      className={cn(
+        'border-b border-ink-700 py-10 last:border-b-0 sm:py-12 lg:border-b-0',
+        index === 0 ? 'lg:pr-12' : 'lg:border-l lg:pl-12'
+      )}
+    >
+      <Reveal delay={index * 0.08}>
         <article aria-labelledby={`${id}-title`}>
-          <div className="flex flex-wrap items-center gap-x-4 gap-y-2 font-mono text-xs">
+          {/* Fixed height keeps titles aligned across a row whether or not a badge is present */}
+          <div className="flex h-6 items-center gap-4 font-mono text-xs">
             <span className="text-signal">{service.number}</span>
-            <span className="uppercase tracking-[0.16em] text-fog-dim">{pillar.label}</span>
             {service.core && (
               <span className="rounded-full border border-signal/40 px-2.5 py-0.5 uppercase tracking-[0.12em] text-signal-soft">
                 Core service
@@ -20,27 +25,24 @@ function ServiceEntry({ service }: { service: ServiceItem }) {
             )}
           </div>
 
-          <h3
+          <h4
             id={`${id}-title`}
-            className="mt-5 font-display text-2xl font-semibold leading-[1.15] tracking-[-0.015em] text-paper sm:text-3xl"
+            className="mt-4 font-display text-2xl font-semibold leading-[1.15] tracking-[-0.015em] text-paper sm:text-[1.75rem]"
           >
             {service.title}
-          </h3>
+          </h4>
 
-          <div className="mt-6 grid gap-8 md:grid-cols-5 md:gap-10">
-            <p className="text-lg leading-snug text-paper-dim md:col-span-2">{service.summary}</p>
-            <div className="md:col-span-3">
-              <p className="eyebrow">What&apos;s included</p>
-              <ul className="mt-3 space-y-3">
-                {service.included.map((item) => (
-                  <li key={item} className="flex gap-3 text-[15px] leading-relaxed text-fog">
-                    <span aria-hidden="true" className="mt-[0.7em] h-px w-3 shrink-0 bg-shade-3" />
-                    <span>{item}</span>
-                  </li>
-                ))}
-              </ul>
-            </div>
-          </div>
+          <p className="mt-4 max-w-xl text-[17px] leading-snug text-paper-dim">{service.summary}</p>
+
+          <p className="eyebrow mt-8">What&apos;s included</p>
+          <ul className="mt-3 space-y-3">
+            {service.included.map((item) => (
+              <li key={item} className="flex gap-3 text-[15px] leading-relaxed text-fog">
+                <span aria-hidden="true" className="mt-[0.7em] h-px w-3 shrink-0 bg-shade-3" />
+                <span>{item}</span>
+              </li>
+            ))}
+          </ul>
         </article>
       </Reveal>
     </li>
@@ -52,30 +54,43 @@ export function Services() {
 
   return (
     <section id="services" aria-labelledby="services-heading" className="relative">
-      <div className="safe-x mx-auto grid max-w-7xl gap-12 py-20 sm:py-28 lg:grid-cols-12 lg:gap-10 lg:py-32">
-        <div className="lg:col-span-4">
-          <div className="lg:top-28 lg:tall:sticky">
-            <Reveal>
-              <p className="eyebrow">
-                <span className="text-signal">01</span> — {services.kicker}
-              </p>
-              <h2
-                id="services-heading"
-                className="mt-5 font-display text-[1.9rem] font-semibold leading-[1.08] tracking-[-0.02em] text-paper sm:text-4xl lg:text-[2.1rem] xl:text-[2.4rem]"
-              >
-                {services.heading} <span className="text-shade-3">{services.headingMuted}</span>
-              </h2>
-              <p className="mt-5 max-w-md text-base leading-relaxed text-fog">{services.intro}</p>
-            </Reveal>
-            <ServiceIndex />
+      <div className="safe-x mx-auto max-w-7xl py-20 sm:py-28 lg:py-32">
+        <Reveal className="grid gap-6 lg:grid-cols-12 lg:items-end lg:gap-10">
+          <div className="lg:col-span-7">
+            <p className="eyebrow">
+              <span className="text-signal">01</span> — {services.kicker}
+            </p>
+            <h2
+              id="services-heading"
+              className="mt-5 font-display text-[1.9rem] font-semibold leading-[1.08] tracking-[-0.02em] text-paper sm:text-4xl lg:text-5xl"
+            >
+              {services.heading} <span className="text-shade-3">{services.headingMuted}</span>
+            </h2>
           </div>
-        </div>
+          <p className="max-w-xl text-base leading-relaxed text-fog sm:text-lg lg:col-span-5">
+            {services.intro}
+          </p>
+        </Reveal>
 
-        <ol className="lg:col-span-8 lg:col-start-5" aria-label="Services">
-          {services.items.map((service) => (
-            <ServiceEntry key={service.number} service={service} />
+        <div className="mt-14 space-y-12 sm:mt-20 sm:space-y-16">
+          {services.pillars.map((pillar) => (
+            <div key={pillar.id} id={`pillar-${pillar.id}`}>
+              <Reveal className="flex flex-wrap items-baseline gap-x-4 gap-y-1 border-b border-ink-700 pb-4">
+                <h3 className="font-display text-xl font-semibold tracking-tight text-paper sm:text-2xl">
+                  {pillar.label}
+                </h3>
+                <p className="basis-full text-sm text-fog-dim sm:basis-auto">{pillar.summary}</p>
+              </Reveal>
+              <ul className="grid lg:grid-cols-2">
+                {services.items
+                  .filter((service) => service.pillar === pillar.id)
+                  .map((service, j) => (
+                    <ServiceEntry key={service.number} service={service} index={j} />
+                  ))}
+              </ul>
+            </div>
           ))}
-        </ol>
+        </div>
       </div>
     </section>
   );
