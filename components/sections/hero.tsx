@@ -66,6 +66,20 @@ export function Hero() {
               <ArrowDown aria-hidden="true" className="h-4 w-4" />
             </ButtonLink>
           </div>
+
+          <dl
+            className={cn('mt-12 grid grid-cols-2 gap-6 border-t border-ink-700 pt-6 sm:max-w-lg', enter)}
+            style={{ animationDelay: '320ms' }}
+          >
+            {hero.proof.map((item) => (
+              <div key={item.value} className="flex flex-col-reverse">
+                <dt className="mt-1.5 text-[13px] leading-snug text-fog sm:text-sm">{item.label}</dt>
+                <dd className="font-display text-3xl font-semibold tracking-tight text-paper sm:text-4xl">
+                  {item.value}
+                </dd>
+              </div>
+            ))}
+          </dl>
         </div>
 
         <div className={cn('lg:col-span-5', enter)} style={{ animationDelay: '200ms' }}>

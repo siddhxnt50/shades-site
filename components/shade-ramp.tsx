@@ -1,70 +1,54 @@
-import { siteConfig } from '@/config/site';
+import { firstServiceIn, siteConfig } from '@/config/site';
 import { cn } from '@/lib/utils';
 
-/**
- * The logo mark rebuilt as the hero figure: five shapes forming the Shades
- * skyline, one per service. Each shape links to its service entry.
- */
+/** The logo mark, enlarged as the hero figure. */
 const shapes = [
-  { height: '46%', clip: 'polygon(100% 0, 100% 100%, 0 100%)', tone: 'bg-shade-1 group-hover:bg-shade-2' },
-  { height: '74%', clip: 'none', tone: 'bg-shade-2 group-hover:bg-shade-3' },
-  {
-    height: '100%',
-    clip: 'polygon(50% 0, 100% 9%, 100% 100%, 0 100%, 0 9%)',
-    tone: 'bg-signal group-hover:bg-signal-soft',
-  },
-  { height: '78%', clip: 'none', tone: 'bg-shade-4 group-hover:bg-shade-5' },
-  { height: '56%', clip: 'polygon(0 0, 100% 100%, 0 100%)', tone: 'bg-shade-5 group-hover:bg-white' },
+  { height: '46%', clip: 'polygon(100% 0, 100% 100%, 0 100%)', tone: 'bg-shade-1' },
+  { height: '74%', clip: 'none', tone: 'bg-shade-2' },
+  { height: '100%', clip: 'polygon(50% 0, 100% 9%, 100% 100%, 0 100%, 0 9%)', tone: 'bg-signal' },
+  { height: '78%', clip: 'none', tone: 'bg-shade-4' },
+  { height: '56%', clip: 'polygon(0 0, 100% 100%, 0 100%)', tone: 'bg-shade-5' },
 ];
 
 export function ShadeRamp() {
-  const services = siteConfig.services.items;
+  const { pillars } = siteConfig.services;
 
   return (
-    <figure className="w-full">
-      <figcaption className="eyebrow mb-5 flex items-center gap-3">
-        <span aria-hidden="true" className="h-px w-8 bg-shade-2" />
-        {siteConfig.hero.rampCaption}
-      </figcaption>
-      <ul className="grid grid-cols-5 items-end gap-2 sm:gap-3">
-        {services.map((service, i) => {
-          const shape = shapes[i];
-          return (
-            <li key={service.number}>
+    <div className="w-full">
+      <div aria-hidden="true" className="grid h-36 grid-cols-5 items-end gap-2 xs:h-44 sm:h-56 sm:gap-3 lg:h-72">
+        {shapes.map((shape, i) => (
+          <span
+            key={i}
+            className={cn('block w-full origin-bottom animate-rise motion-reduce:animate-none', shape.tone)}
+            style={{
+              height: shape.height,
+              clipPath: shape.clip,
+              animationDelay: `${200 + i * 110}ms`,
+            }}
+          />
+        ))}
+      </div>
+
+      <nav aria-label="Service areas" className="mt-4">
+        <ul className="grid grid-cols-3 border-t border-ink-700">
+          {pillars.map((pillar, i) => (
+            <li key={pillar.id} className={cn(i > 0 && 'border-l border-ink-700')}>
               <a
-                href={`#service-${service.number}`}
-                className="group flex flex-col"
-                aria-label={`${service.number} ${service.category}: ${service.title}`}
+                href={`#service-${firstServiceIn(pillar.id).number}`}
+                className={cn('group block h-full pb-1 pt-4', i === 0 ? 'pr-2' : 'pl-3 pr-1 sm:pl-4')}
               >
-                <span
-                  aria-hidden="true"
-                  className="flex h-36 items-end xs:h-44 sm:h-56 lg:h-72"
-                >
-                  <span
-                    className={cn(
-                      'block w-full origin-bottom animate-rise transition-colors duration-300 motion-reduce:animate-none',
-                      shape.tone
-                    )}
-                    style={{
-                      height: shape.height,
-                      clipPath: shape.clip,
-                      animationDelay: `${200 + i * 110}ms`,
-                    }}
-                  />
+                <span className="block font-mono text-[10px] text-signal sm:text-[11px]">0{i + 1}</span>
+                <span className="mt-1 block font-display text-[13px] font-semibold text-paper transition-colors group-hover:text-white xs:text-sm sm:text-base">
+                  {pillar.label}
                 </span>
-                <span
-                  aria-hidden="true"
-                  className="mt-3 border-t border-ink-700 pt-3 font-mono text-[10px] leading-tight text-fog-dim transition-colors group-hover:text-paper sm:text-[11px]"
-                >
-                  <span className="block text-shade-3 group-hover:text-signal">{service.number}</span>
-                  <span className="block sm:hidden">{service.shortCategory}</span>
-                  <span className="hidden sm:block">{service.category}</span>
+                <span className="mt-1 hidden text-xs leading-snug text-fog-dim sm:block">
+                  {pillar.summary}
                 </span>
               </a>
             </li>
-          );
-        })}
-      </ul>
-    </figure>
+          ))}
+        </ul>
+      </nav>
+    </div>
   );
 }

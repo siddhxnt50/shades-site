@@ -43,7 +43,7 @@ export function Contact() {
           <CopyEmail email={contactEmail} />
         </Reveal>
 
-        <p className="eyebrow mt-8 normal-case tracking-[0.04em]">{contact.note}</p>
+        <p className="mt-8 text-sm text-fog-dim">{contact.note}</p>
       </div>
     </section>
   );

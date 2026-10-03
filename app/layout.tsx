@@ -62,7 +62,13 @@ const jsonLd = {
       mainEntity: siteConfig.faq.items.map((item) => ({
         '@type': 'Question',
         name: item.question,
-        acceptedAnswer: { '@type': 'Answer', text: item.answer },
+        acceptedAnswer: {
+          '@type': 'Answer',
+          text:
+            'guide' in item
+              ? `${item.answer} ${item.guide.map((row) => `${row.need}: ${row.service}.`).join(' ')}`
+              : item.answer,
+        },
       })),
     },
   ],

@@ -25,7 +25,19 @@ export function Faq() {
             {faq.items.map((item, i) => (
               <AccordionItem key={item.question} value={`faq-${i}`}>
                 <AccordionTrigger>{item.question}</AccordionTrigger>
-                <AccordionContent>{item.answer}</AccordionContent>
+                <AccordionContent>
+                  <p>{item.answer}</p>
+                  {'guide' in item && (
+                    <dl className="mt-4 divide-y divide-ink-700 border-y border-ink-700">
+                      {item.guide.map((row) => (
+                        <div key={row.need} className="grid gap-1 py-3 sm:grid-cols-2 sm:gap-6">
+                          <dt className="text-fog">{row.need}</dt>
+                          <dd className="text-paper">{row.service}</dd>
+                        </div>
+                      ))}
+                    </dl>
+                  )}
+                </AccordionContent>
               </AccordionItem>
             ))}
           </Accordion>

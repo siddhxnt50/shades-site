@@ -46,7 +46,7 @@ export function SiteFooter() {
 
         <div className="mt-16 flex flex-col-reverse gap-4 border-t border-ink-700 pt-6 sm:flex-row sm:items-center sm:justify-between">
           <p className="text-xs text-fog-dim">
-            © {year} {siteConfig.name}. {siteConfig.footer.signoff}
+            © {year} {siteConfig.name}
           </p>
           <a
             href="#top"

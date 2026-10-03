@@ -45,7 +45,7 @@ export default function OgImage() {
             {siteConfig.tagline}
           </div>
           <div style={{ marginTop: 28, fontSize: 26, color: '#9AA3AE' }}>
-            Sales funnels and operational infrastructure for early-stage startups.
+            {siteConfig.summary}
           </div>
         </div>
         <div style={{ display: 'flex', alignItems: 'flex-end', height: 360, gap: 12 }}>

@@ -15,6 +15,8 @@ const config: Config = {
       lg: '1024px',
       xl: '1280px',
       '2xl': '1536px',
+      // Height gate for sticky sidebars, so they never outgrow short laptop screens.
+      tall: { raw: '(min-height: 840px)' },
     },
     extend: {
       colors: {

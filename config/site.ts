@@ -4,76 +4,120 @@ export interface HeadlineSegment {
   readonly accent?: boolean;
 }
 
+export interface Pillar {
+  readonly id: 'capital' | 'customers' | 'credibility';
+  readonly label: string;
+  readonly summary: string;
+}
+
+export interface ServiceItem {
+  readonly number: string;
+  readonly pillar: Pillar['id'];
+  readonly title: string;
+  readonly summary: string;
+  readonly included: readonly string[];
+  /** Flags the flagship service */
+  readonly core?: boolean;
+}
+
 const heroHeadline: readonly HeadlineSegment[] = [
-  { text: 'We build the ' },
-  { text: 'sales funnels', accent: true },
+  { text: 'We help early-stage startups ' },
+  { text: 'raise capital', accent: true },
+  { text: ', ' },
+  { text: 'win customers', accent: true },
   { text: ' and ' },
-  { text: 'operational infrastructure', accent: true },
-  { text: ' that take early-stage startups to market.' },
+  { text: 'get noticed', accent: true },
+  { text: '.' },
 ];
 
-const services = [
+const pillars: readonly Pillar[] = [
+  { id: 'capital', label: 'Capital', summary: 'Raise money and build a business investors will back.' },
+  { id: 'customers', label: 'Customers', summary: 'Find buyers and build a brand they remember.' },
+  { id: 'credibility', label: 'Credibility', summary: 'Be taken seriously by press, investors and customers.' },
+];
+
+const services: readonly ServiceItem[] = [
   {
     number: '01',
-    category: 'Sales',
-    shortCategory: 'Sales',
-    title: 'Go-To-Market & Sales Pipeline Execution',
-    outcome: 'Accelerating customer acquisition channels and validating product-market fit.',
-    bullets: [
-      'Building outbound sales infrastructure from scratch.',
-      'Setting up automated messaging sequences.',
-      'Managing conversion funnels from raw lead to live demo.',
+    pillar: 'capital',
+    core: true,
+    title: 'Fundraising Support',
+    summary:
+      'We get you ready to raise, then introduce you to the right investors from our network of 200+ investors and VC firms.',
+    included: [
+      'A data room organised the way investors expect to see it.',
+      'Financial models and projections built from your real numbers.',
+      'One strategy for product, sales, marketing and finance, so your answers to investors stay consistent.',
+      'Your traction and numbers turned into a pitch investors can follow.',
+      'Introductions and outreach to investors and VC firms in our network.',
     ],
   },
   {
     number: '02',
-    category: 'Intelligence',
-    shortCategory: 'Intel',
-    title: 'Market Intelligence & Positioning Diagnostics',
-    outcome: 'Eliminating market guesswork with real-time field data.',
-    bullets: [
-      'Continuous competitor mapping.',
-      'Pricing sensitivity analysis and localized demand assessments.',
-      'Collecting raw buyer feedback to optimize sales scripts.',
+    pillar: 'capital',
+    title: 'Business Model & Operations',
+    summary:
+      'We set up your pricing, finances and company structure so the business holds up as it grows — and when investors look closely.',
+    included: [
+      'Pricing and plans for B2B and consumer products, including subscriptions.',
+      'Revenue models and the key metrics investors ask about.',
+      'Lean budgets and cost controls that make your runway last longer.',
+      'Company and equity structure that protects founders.',
+      'Milestone plans that tie spending to progress.',
     ],
   },
   {
     number: '03',
-    category: 'Operations',
-    shortCategory: 'Ops',
-    title: 'Corporate Architecture & Operational Guardrails',
-    outcome: 'Protecting founder equity and maximizing operational runway.',
-    bullets: [
-      'Engineering lean fiscal frameworks.',
-      'Designing administrative safety boundaries.',
-      'Building structured milestone layers for bootstrap environments.',
+    pillar: 'customers',
+    title: 'Sales & Go-to-Market',
+    summary:
+      'We build your sales process from scratch and use real market feedback to sharpen it.',
+    included: [
+      'Outbound sales set up end to end: target lists, messaging and automated follow-ups.',
+      'Pipeline management, from first contact to booked demo.',
+      'Competitor research.',
+      'Demand checks before you enter a new city or market.',
+      'Buyer interviews, with what we learn fed straight back into your sales pitch.',
     ],
   },
   {
     number: '04',
-    category: 'Revenue',
-    shortCategory: 'Revenue',
-    title: 'Monetization Strategy & Pricing Frameworks',
-    outcome: 'Unlocking hidden margins and structuring recurring revenue.',
-    bullets: [
-      'Deploying multi-tiered revenue distribution strategies.',
-      'Optimizing pricing tiers across segments.',
-      'Engineering subscription metrics for B2B and consumer sectors.',
+    pillar: 'customers',
+    title: 'Marketing Strategy',
+    summary:
+      'We define your brand, then run your social media, your founder profile and your launch ads.',
+    included: [
+      'Brand DNA: what you stand for, how you sound and how you look.',
+      'Social media management across platforms.',
+      'Personal brand building for founders.',
+      'Ad campaigns for product launches.',
     ],
   },
   {
     number: '05',
-    category: 'Capital',
-    shortCategory: 'Capital',
-    title: 'Growth, Expansion & Investment Readiness Support',
-    outcome: 'Packaging early metrics for institutional and angel capital.',
-    bullets: [
-      'Translating growth trajectories into a clear venture narrative.',
-      'Codifying operational data and financial guardrails.',
-      'Building an ironclad investor pack for fundraising cycles.',
+    pillar: 'credibility',
+    title: 'PR & Media',
+    summary:
+      'We get your startup covered in the national and business media that investors, customers and future hires read.',
+    included: [
+      'Articles in major news outlets — ANI, The Times of India, Forbes, Business Standard, Republic and hundreds more.',
+      'A story angle that suits each outlet.',
+      'Coverage planned around the message you want to put out.',
     ],
   },
-] as const;
+  {
+    number: '06',
+    pillar: 'credibility',
+    title: 'Websites',
+    summary:
+      'We design and build the site people land on after an investor intro, a press article or an ad.',
+    included: [
+      'Website design built on your brand identity.',
+      'Fast, mobile-friendly development.',
+      'Landing pages for product launches and ad campaigns.',
+    ],
+  },
+];
 
 export const siteConfig = {
   name: 'Shades Consulting',
@@ -81,8 +125,9 @@ export const siteConfig = {
   tagline: 'Bridging the gap from MVP to Market',
   url: 'https://shadesconsulting.in',
   description:
-    'We build the sales funnels and operational infrastructure that take early-stage startups from MVP to market. Execution, not slide decks.',
-  contactEmail: 'hello@shadesconsulting.co',
+    'Shades Consulting helps early-stage startups raise capital, win customers and get noticed — fundraising support, business operations, sales, marketing, press coverage and websites.',
+  summary: 'Fundraising, operations, sales, marketing, PR and websites for early-stage startups.',
+  contactEmail: 'ceo@shadesconsulting.in',
 
   nav: [
     { label: 'Services', href: '#services' },
@@ -90,74 +135,77 @@ export const siteConfig = {
     { label: 'Approach', href: '#approach' },
     { label: 'FAQ', href: '#faq' },
   ],
-  navCta: { label: 'Book an audit', href: '#contact' },
+  navCta: { label: 'Get in touch', href: '#contact' },
 
   hero: {
-    status: 'Currently onboarding founders',
+    status: 'Taking on new clients',
     headline: heroHeadline,
     subheadline:
-      'Execution over slide decks. We embed, ship the pipes, and leave the rails behind — so your runway becomes revenue, not retainer fees.',
-    ctaPrimary: { label: 'Book a GTM audit', href: '#contact' },
-    ctaSecondary: { label: 'Explore the services', href: '#services' },
-    rampCaption: 'Five execution surfaces',
+      'Fundraising, business operations, sales, marketing, PR and websites, handled by one team.',
+    ctaPrimary: { label: 'Get in touch', href: '#contact' },
+    ctaSecondary: { label: 'See what we do', href: '#services' },
+    proof: [
+      { value: '200+', label: 'investors and VC firms in our network' },
+      { value: '100s', label: 'of media outlets we place stories in, from ANI to Forbes' },
+    ],
   },
 
   socialProof: {
-    prefix: 'Trusted by early-stage innovators at',
+    prefix: 'Trusted by founders at',
     names: ['Chitrabazaar', 'Kast', 'Krut.ai', 'OptimaLegal', 'Zoecrafts'],
   },
 
   services: {
     kicker: 'Services',
-    heading: 'Five execution surfaces.',
-    headingMuted: 'Zero theory.',
+    heading: 'Capital, customers, credibility.',
+    headingMuted: 'Six services, one team.',
     intro:
-      'Each block ships with a measurable outcome and a precise scope of work. No retainers without a release date.',
+      'Most founders need more than one of these at the same time. We run them together, so your investor pitch, your marketing and your press coverage all tell the same story.',
+    pillars,
     items: services,
   },
 
   process: {
     kicker: 'Process',
-    heading: 'From first call',
-    headingMuted: 'to running system.',
+    heading: 'Three steps.',
+    headingMuted: 'No surprises.',
     steps: [
       {
         number: '01',
-        title: 'Diagnose',
-        body: "A 45-minute GTM audit. We map your funnel gaps, surface the next 90 days of execution, and tell you straight if we're not the right fit.",
+        title: 'Talk',
+        body: "A 45-minute call. We look at where you are and what you need next — a raise, customers, coverage — and tell you straight if we're not the right fit.",
       },
       {
         number: '02',
-        title: 'Build',
-        body: 'We deploy our own diagnostic models and tracking workflows, then ship the infrastructure — outbound pipelines, pricing frameworks, operational guardrails.',
+        title: 'Plan',
+        body: 'Before any work starts, we agree on exactly what we will deliver.',
       },
       {
         number: '03',
-        title: 'Hand over',
-        body: 'We leave the rails behind. You keep the systems, the data and the playbook — so your runway turns into revenue, not retainer fees.',
+        title: 'Deliver',
+        body: 'We do the agreed work and keep you updated as it progresses.',
       },
     ],
   },
 
   approach: {
-    kicker: 'The anti-consultant promise',
-    statementLead: 'We operate with ',
-    statementAccent: 'absolute resource autonomy',
+    kicker: 'How we are different',
+    statementLead: "We don't hand you a report and walk away. ",
+    statementAccent: 'We do the work ourselves',
     statementRest:
-      ". We don't drain internal management bandwidth — we deploy our own diagnostic models and tracking workflows so you can stay focused on shipping product.",
+      ' — with our own team, tools and contacts — so you can stay focused on building your product.',
     usualLabel: 'The usual consultancy',
     oursLabel: 'Shades',
     comparison: [
-      { usual: '60-page theoretical slide decks', ours: 'Working systems, shipped and running' },
       {
-        usual: 'Draws on your management bandwidth',
-        ours: 'Our own diagnostic models and tracking workflows',
+        usual: 'Long strategy reports',
+        ours: 'Finished work: data rooms, campaigns, published articles, live websites',
       },
-      { usual: 'Advice you still have to implement', ours: 'Execution from raw lead to live demo' },
       {
-        usual: 'Open-ended retainers',
-        ours: 'Every engagement ships with a measurable outcome',
+        usual: 'Separate agencies for fundraising, marketing and PR',
+        ours: 'One team for all of it',
       },
+      { usual: 'Open-ended retainers', ours: 'Agreed scope and deliverables' },
     ],
   },
 
@@ -168,52 +216,46 @@ export const siteConfig = {
     items: [
       {
         question: 'Who do you work with?',
-        answer:
-          'Early-stage startups making the jump from MVP to market — founders who have a product and now need the sales pipeline, pricing and operational backbone to sell it, across both B2B and consumer sectors.',
+        answer: 'Early-stage startups with a working product, in both B2B and consumer sectors.',
       },
       {
-        question: 'What happens on the GTM audit?',
-        answer:
-          "It's a 45-minute diagnostic. We map your funnel gaps, surface the next 90 days of execution, and tell you straight if we're not the right fit.",
+        question: 'Which service do I need?',
+        answer: 'Not sure? That is what the first call is for. As a rough guide:',
+        guide: [
+          { need: 'Raising soon', service: 'Fundraising Support' },
+          { need: 'Pricing, budgets or company structure', service: 'Business Model & Operations' },
+          { need: 'Need customers', service: 'Sales & Go-to-Market or Marketing Strategy' },
+          { need: 'Need to be known', service: 'PR & Media' },
+          { need: 'No proper website yet', service: 'Websites' },
+        ],
       },
       {
         question: "How much of our team's time will this take?",
         answer:
-          "As little as possible. We operate with absolute resource autonomy — we bring our own diagnostic models and tracking workflows instead of drawing on your management bandwidth, so you can stay focused on shipping product.",
-      },
-      {
-        question: 'Do we get a strategy deck at the end?',
-        answer:
-          'No 60-page theoretical slide decks. You get working infrastructure — outbound systems, pricing frameworks and operational guardrails — that keeps running after we hand it over.',
-      },
-      {
-        question: 'Can you help us get ready to raise?',
-        answer:
-          'Yes. We translate your growth trajectory, operational data and financial guardrails into an ironclad venture narrative and investor pack for institutional and angel capital.',
-      },
-      {
-        question: 'How quickly will we hear back?',
-        answer: 'We typically respond within 12 hours.',
+          'Very little. Beyond sharing information with us and reviewing our work, your team stays on the product.',
       },
     ],
   },
 
   contact: {
     kicker: 'Start here',
-    headingLead: 'Ready to build ',
-    headingAccent: 'the pipes?',
-    body: "A 45-minute diagnostic. We map your funnel gaps, surface the next 90 days of execution, and tell you straight if we're not the right fit.",
-    button: 'Book a startup GTM audit',
-    subjectLine: 'Startup GTM Audit',
-    note: 'Typically responds within 12 hours · Founders only',
-  },
-
-  footer: {
-    signoff: 'Built for founders who ship.',
+    headingLead: "Let's talk about ",
+    headingAccent: "what's next.",
+    body: "Tell us whether you're raising, launching or growing, and we'll set up a call.",
+    button: 'Email us',
+    subjectLine: 'Enquiry from shadesconsulting.in',
+    note: 'We usually reply within 12 hours.',
   },
 } as const;
 
-export type ServiceItem = (typeof services)[number];
-
 export const sectionIds = siteConfig.nav.map((item) => item.href.slice(1));
 export const serviceIds = services.map((s) => `service-${s.number}`);
+
+export function pillarOf(service: ServiceItem): Pillar {
+  return pillars.find((p) => p.id === service.pillar)!;
+}
+
+/** First service in each pillar — the hero figure links each pillar there. */
+export function firstServiceIn(pillar: Pillar['id']): ServiceItem {
+  return services.find((s) => s.pillar === pillar)!;
+}
