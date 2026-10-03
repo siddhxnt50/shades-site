@@ -152,7 +152,7 @@ export const siteConfig = {
 
   socialProof: {
     prefix: 'Trusted by founders at',
-    names: ['Chitrabazaar', 'Kast', 'Krut.ai', 'OptimaLegal', 'Zoecrafts'],
+    names: ['Chitrabazaar', 'Kast', 'Krut.ai', 'OptimaLegal', 'FPA GCC', 'Re3U Skincare'],
   },
 
   services: {
