@@ -35,8 +35,8 @@ export function Contact() {
           <p className="mt-7 max-w-xl text-base leading-relaxed text-fog sm:text-lg">{contact.body}</p>
         </Reveal>
 
-        <Reveal delay={0.1} className="mt-10 flex flex-col gap-3 sm:mt-12 sm:flex-row sm:items-center">
-          <ButtonLink href={mailto} size="lg" fullWidthMobile>
+        <Reveal delay={0.1} className="mt-10 flex flex-col gap-3 sm:mt-12 md:flex-row md:items-center">
+          <ButtonLink href={mailto} size="lg" className="w-full md:w-auto">
             {contact.button}
             <ArrowUpRight aria-hidden="true" className="h-4 w-4" />
           </ButtonLink>

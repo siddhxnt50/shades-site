@@ -24,7 +24,7 @@ export default function HomePage() {
         <Faq />
         <Contact />
       </main>
-      <div className="relative z-10">
+      <div id="footer" className="relative z-10">
         <SiteFooter />
       </div>
     </>

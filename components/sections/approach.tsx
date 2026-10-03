@@ -6,10 +6,10 @@ export function Approach() {
   const { approach } = siteConfig;
 
   return (
-    <section id="approach" aria-labelledby="approach-heading" className="border-t border-ink-700">
+    <section id="approach" aria-labelledby="approach-kicker" className="border-t border-ink-700">
       <div className="safe-x mx-auto max-w-7xl py-20 sm:py-28 lg:py-32">
         <Reveal>
-          <p className="eyebrow">
+          <p id="approach-kicker" className="eyebrow">
             <span className="text-signal">03</span> — {approach.kicker}
           </p>
           <h2

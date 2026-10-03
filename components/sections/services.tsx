@@ -22,7 +22,7 @@ function ServiceEntry({ service, index }: { service: ServiceItem; index: number 
   const id = `service-${service.number}`;
 
   return (
-    <li id={id} className="scroll-mt-28 border-b border-ink-700 py-10 first:pt-0 sm:py-14 lg:first:pt-2">
+    <li id={id} className="border-b border-ink-700 py-10 first:pt-0 sm:py-14 lg:first:pt-2">
       <Reveal>
         <article aria-labelledby={`${id}-title`}>
           <div className="flex items-center gap-4 font-mono text-xs">

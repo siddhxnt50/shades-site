@@ -16,6 +16,7 @@ const services = [
   {
     number: '01',
     category: 'Sales',
+    shortCategory: 'Sales',
     title: 'Go-To-Market & Sales Pipeline Execution',
     outcome: 'Accelerating customer acquisition channels and validating product-market fit.',
     bullets: [
@@ -27,6 +28,7 @@ const services = [
   {
     number: '02',
     category: 'Intelligence',
+    shortCategory: 'Intel',
     title: 'Market Intelligence & Positioning Diagnostics',
     outcome: 'Eliminating market guesswork with real-time field data.',
     bullets: [
@@ -38,6 +40,7 @@ const services = [
   {
     number: '03',
     category: 'Operations',
+    shortCategory: 'Ops',
     title: 'Corporate Architecture & Operational Guardrails',
     outcome: 'Protecting founder equity and maximizing operational runway.',
     bullets: [
@@ -49,6 +52,7 @@ const services = [
   {
     number: '04',
     category: 'Revenue',
+    shortCategory: 'Revenue',
     title: 'Monetization Strategy & Pricing Frameworks',
     outcome: 'Unlocking hidden margins and structuring recurring revenue.',
     bullets: [
@@ -60,6 +64,7 @@ const services = [
   {
     number: '05',
     category: 'Capital',
+    shortCategory: 'Capital',
     title: 'Growth, Expansion & Investment Readiness Support',
     outcome: 'Packaging early metrics for institutional and angel capital.',
     bullets: [
@@ -74,7 +79,6 @@ export const siteConfig = {
   name: 'Shades Consulting',
   shortName: 'Shades',
   tagline: 'Bridging the gap from MVP to Market',
-  shortTagline: 'MVP → Market',
   url: 'https://shadesconsulting.in',
   description:
     'We build the sales funnels and operational infrastructure that take early-stage startups from MVP to market. Execution, not slide decks.',
@@ -209,7 +213,6 @@ export const siteConfig = {
   },
 } as const;
 
-export type SiteConfig = typeof siteConfig;
 export type ServiceItem = (typeof services)[number];
 
 export const sectionIds = siteConfig.nav.map((item) => item.href.slice(1));

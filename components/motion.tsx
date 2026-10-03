@@ -8,7 +8,6 @@ interface RevealProps {
   /** Seconds to wait after entering the viewport */
   delay?: number;
   className?: string;
-  as?: 'div' | 'li' | 'span';
 }
 
 /**
@@ -16,10 +15,9 @@ interface RevealProps {
  * (compositor-friendly), fires once. Above-the-fold content uses CSS
  * keyframes instead so it paints before hydration.
  */
-export function Reveal({ children, delay = 0, className, as = 'div' }: RevealProps) {
-  const Tag = motion[as];
+export function Reveal({ children, delay = 0, className }: RevealProps) {
   return (
-    <Tag
+    <motion.div
       // Matched by the <noscript> override in layout.tsx so content stays visible without JS.
       data-reveal=""
       className={className}
@@ -29,6 +27,6 @@ export function Reveal({ children, delay = 0, className, as = 'div' }: RevealPro
       transition={{ duration: 0.7, ease: [0.21, 0.47, 0.32, 0.98], delay }}
     >
       {children}
-    </Tag>
+    </motion.div>
   );
 }

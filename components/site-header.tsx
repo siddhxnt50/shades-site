@@ -35,6 +35,11 @@ export function SiteHeader() {
   React.useEffect(() => {
     if (!open) return;
     document.body.style.overflow = 'hidden';
+    // Screen-reader swipe navigation ignores the Tab trap; inert hides the page behind the sheet.
+    const background = [document.getElementById('main'), document.getElementById('footer')].filter(
+      (el): el is HTMLElement => el !== null
+    );
+    background.forEach((el) => (el.inert = true));
     sheetRef.current?.querySelector<HTMLElement>(FOCUSABLE)?.focus();
 
     const onKey = (e: KeyboardEvent) => {
@@ -64,6 +69,7 @@ export function SiteHeader() {
     window.addEventListener('resize', onResize);
     return () => {
       document.body.style.overflow = '';
+      background.forEach((el) => (el.inert = false));
       document.removeEventListener('keydown', onKey);
       window.removeEventListener('resize', onResize);
     };
@@ -79,7 +85,8 @@ export function SiteHeader() {
         open
           ? 'border-ink-700 bg-ink-900'
           : scrolled
-            ? 'border-ink-700 bg-ink-900/85 backdrop-blur-xl'
+            ? // Blur only on desktop: on phones it would re-sample the particle canvas every frame.
+              'border-ink-700 bg-ink-900/95 md:bg-ink-900/80 md:backdrop-blur-xl'
             : 'border-transparent bg-transparent'
       )}
     >
@@ -91,7 +98,7 @@ export function SiteHeader() {
           </span>
         </a>
 
-        <nav aria-label="Main" className="hidden items-center gap-1 md:flex">
+        <nav aria-label="Primary" className="hidden items-center gap-1 md:flex">
           {siteConfig.nav.map((item) => {
             const isActive = active === item.href.slice(1);
             return (
@@ -149,6 +156,9 @@ export function SiteHeader() {
           <motion.div
             ref={sheetRef}
             id="mobile-menu"
+            role="dialog"
+            aria-modal="true"
+            aria-label="Menu"
             className="fixed inset-x-0 bottom-0 top-16 overflow-y-auto bg-ink-900 md:hidden"
             initial={{ opacity: 0, y: -8 }}
             animate={{ opacity: 1, y: 0 }}
@@ -162,6 +172,7 @@ export function SiteHeader() {
                     <a
                       href={item.href}
                       onClick={() => close(false)}
+                      aria-current={active === item.href.slice(1) ? 'true' : undefined}
                       className="flex items-baseline gap-4 py-5 font-display text-2xl font-semibold text-paper"
                     >
                       <span className="font-mono text-xs font-normal text-signal">0{i + 1}</span>
@@ -180,9 +191,12 @@ export function SiteHeader() {
                   {siteConfig.hero.ctaPrimary.label}
                   <ArrowRight aria-hidden="true" className="h-4 w-4" />
                 </ButtonLink>
-                <p className="eyebrow mt-5 text-center normal-case tracking-[0.04em]">
+                <a
+                  href={`mailto:${siteConfig.contactEmail}`}
+                  className="eyebrow mt-3 block py-2 text-center normal-case tracking-[0.04em]"
+                >
                   {siteConfig.contactEmail}
-                </p>
+                </a>
               </div>
             </nav>
           </motion.div>

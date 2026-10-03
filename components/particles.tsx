@@ -25,7 +25,7 @@ export function ParticleField() {
   const canvasRef = React.useRef<HTMLCanvasElement>(null);
 
   React.useEffect(() => {
-    if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+    const reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)');
     const canvas = canvasRef.current;
     if (!canvas) return;
     const ctx = canvas.getContext('2d', { alpha: true });
@@ -111,12 +111,18 @@ export function ParticleField() {
       window.addEventListener('pointermove', onPointerMove, { passive: true });
     }
 
-    const onVisibility = () => {
+    // Runs only while the tab is visible and the visitor hasn't asked for reduced motion.
+    const syncRunning = () => {
       const wasRunning = running;
-      running = !document.hidden;
+      running = !document.hidden && !reducedMotion.matches;
       if (running && !wasRunning) step();
+      if (!running) {
+        cancelAnimationFrame(rafId);
+        ctx.clearRect(0, 0, width, height);
+      }
     };
-    document.addEventListener('visibilitychange', onVisibility);
+    document.addEventListener('visibilitychange', syncRunning);
+    reducedMotion.addEventListener('change', syncRunning);
 
     let resizeTimer: ReturnType<typeof setTimeout>;
     const onResize = () => {
@@ -126,14 +132,16 @@ export function ParticleField() {
     window.addEventListener('resize', onResize);
 
     resize();
-    step();
+    running = false;
+    syncRunning();
 
     return () => {
       running = false;
       cancelAnimationFrame(rafId);
       clearTimeout(resizeTimer);
       window.removeEventListener('resize', onResize);
-      document.removeEventListener('visibilitychange', onVisibility);
+      document.removeEventListener('visibilitychange', syncRunning);
+      reducedMotion.removeEventListener('change', syncRunning);
       if (hoverCapable) window.removeEventListener('pointermove', onPointerMove);
     };
   }, []);

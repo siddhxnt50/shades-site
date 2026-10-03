@@ -11,7 +11,11 @@ export const metadata: Metadata = {
 
 export default function NotFound() {
   return (
-    <main className="safe-x flex min-h-[100svh] flex-col items-start justify-center">
+    <main
+      id="main"
+      tabIndex={-1}
+      className="safe-x flex min-h-[100svh] flex-col items-start justify-center outline-none"
+    >
       <div className="mx-auto w-full max-w-3xl">
         <LogoMark className="h-10 w-auto" />
         <p className="eyebrow mt-12">

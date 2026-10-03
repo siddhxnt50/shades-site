@@ -14,6 +14,7 @@ export function CopyEmail({ email }: { email: string }) {
   React.useEffect(() => () => clearTimeout(timer.current), []);
 
   async function copy() {
+    let ok = true;
     try {
       await navigator.clipboard.writeText(email);
     } catch {
@@ -25,16 +26,19 @@ export function CopyEmail({ email }: { email: string }) {
       field.style.opacity = '0';
       document.body.appendChild(field);
       field.select();
-      document.execCommand('copy');
+      ok = document.execCommand('copy');
       field.remove();
     }
-    setCopied(true);
+    if (!ok) return;
+    // Reset first so a repeat click is announced again.
+    setCopied(false);
+    requestAnimationFrame(() => setCopied(true));
     clearTimeout(timer.current);
     timer.current = setTimeout(() => setCopied(false), 2200);
   }
 
   return (
-    <div className="flex min-h-14 w-full items-center justify-between gap-3 rounded-[1.75rem] border border-ink-600 py-1.5 pl-5 pr-1.5 sm:w-auto sm:pl-6">
+    <div className="flex min-h-14 w-full items-center justify-between gap-3 rounded-[1.75rem] border border-ink-600 py-1.5 pl-5 pr-1.5 sm:pl-6 md:w-auto">
       <span className="min-w-0 break-all font-mono text-[13px] text-paper-dim sm:text-sm">{email}</span>
       <button
         type="button"

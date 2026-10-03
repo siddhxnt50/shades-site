@@ -57,7 +57,8 @@ export function ShadeRamp() {
                   className="mt-3 border-t border-ink-700 pt-3 font-mono text-[10px] leading-tight text-fog-dim transition-colors group-hover:text-paper sm:text-[11px]"
                 >
                   <span className="block text-shade-3 group-hover:text-signal">{service.number}</span>
-                  <span className="block [hyphens:auto]">{service.category}</span>
+                  <span className="block sm:hidden">{service.shortCategory}</span>
+                  <span className="hidden sm:block">{service.category}</span>
                 </span>
               </a>
             </li>
